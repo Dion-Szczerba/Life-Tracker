@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Life Tracker home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&amp;family=Chakra+Petch:wght@500;600;700&amp;display=swap">
+<style>
+html{color-scheme:dark}
+body{margin:0;background:#0A0820}
+a{color:#3DF5FF}a:hover{color:#9CFAFF}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid #3DF5FF;outline-offset:3px}
+button:hover{filter:brightness(1.18)}
+.fx{transition:background-color .2s ease,box-shadow .2s ease,color .2s ease}
+@keyframes charge{from{opacity:0}to{opacity:1}}
+.seg{animation:charge .4s ease-out both}
+@keyframes glitch{0%{transform:translate(0,0)}20%{transform:translate(-3px,1px)}40%{transform:translate(3px,-1px)}60%{transform:translate(-2px,0)}80%{transform:translate(2px,1px)}100%{transform:translate(0,0)}}
+.glitch{animation:glitch .35s steps(2,end) 1}
+@media (prefers-reduced-motion: reduce){.fx{transition:none}.seg,.glitch{animation:none}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1064px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: #0A0820; color: #E8E6FF; font-family: 'Barlow', system-ui, sans-serif; font-variant-numeric: tabular-nums">
+
+  <main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 54px 20px 18px; display: flex; flex-direction: column; gap: 18px">
+
+    <header style="display: flex; align-items: center; justify-content: space-between">
+      <span style="display: flex; align-items: center; gap: 9px">
+        <span aria-hidden="true" style="display: flex; gap: 3px">
+          <span style="width: 5px; height: 16px; background: #3DF5FF; transform: skewX(-22deg)"></span>
+          <span style="width: 5px; height: 16px; background: #FF3D9A; transform: skewX(-22deg)"></span>
+        </span>
+        <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 0.2px; color: #E8E6FF">Life Tracker</span>
+      </span>
+      <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 500; font-size: 14px; color: #9D99CC">Week {{weekNum}}</span>
+    </header>
+
+    <section aria-label="Today and streak" style="position: relative; padding: 18px 18px 16px; background-color: #120E2E; background-image: linear-gradient(rgba(61, 245, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(61, 245, 255, 0.05) 1px, transparent 1px); background-size: 14px 14px; display: flex; flex-direction: column; gap: 14px">
+      <span aria-hidden="true" style="position: absolute; top: -1px; left: -1px; width: 16px; height: 16px; border-top: 2px solid #3DF5FF; border-left: 2px solid #3DF5FF"></span>
+      <span aria-hidden="true" style="position: absolute; top: -1px; right: -1px; width: 16px; height: 16px; border-top: 2px solid #3DF5FF; border-right: 2px solid #3DF5FF"></span>
+      <span aria-hidden="true" style="position: absolute; bottom: -1px; left: -1px; width: 16px; height: 16px; border-bottom: 2px solid #3DF5FF; border-left: 2px solid #3DF5FF"></span>
+      <span aria-hidden="true" style="position: absolute; bottom: -1px; right: -1px; width: 16px; height: 16px; border-bottom: 2px solid #3DF5FF; border-right: 2px solid #3DF5FF"></span>
+      <span aria-hidden="true" style="position: absolute; bottom: -1px; left: 30px; width: 48px; height: 2px; background: #FF3D9A"></span>
+
+      <h1 style="margin: 0; display: flex; align-items: center; gap: 14px; font-weight: 400">
+        <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 104px; line-height: 0.84; letter-spacing: -4px; color: #3DF5FF; text-shadow: {{numeralShadow}}">{{dayNum}}</span>
+        <span style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.05; color: #E8E6FF">{{dayName}}</span>
+          <span style="font-size: 16px; line-height: 1.25; color: #9D99CC">{{monthYear}}</span>
+          <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 500; font-size: 15px; line-height: 1.25; color: #E8E6FF">{{timeLeft}}</span>
+        </span>
+      </h1>
+
+      <div style="display: flex; flex-direction: column; gap: 5px">
+        <div role="img" aria-label="{{dayLabel}}" style="position: relative; height: 12px">
+          <span style="position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #2A2558"></span>
+          <span style="position: absolute; left: 0; bottom: 0; height: 2px; width: {{dayPct}}%; background: #3DF5FF"></span>
+          <span style="position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: flex-end">
+            <sc-for list="{{ticks}}" as="k" hint-placeholder-count="25">
+              <span style="width: 1px; {{k.style}}"></span>
+            </sc-for>
+          </span>
+          <span style="position: absolute; bottom: 0; left: {{dayPct}}%; width: 2px; height: 16px; margin-left: -1px; background: #FF3D9A; box-shadow: {{glowMagBox}}"></span>
+        </div>
+        <div aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 11px; line-height: 1; color: #9D99CC">
+          <span>00</span><span>06</span><span>12</span><span>18</span><span>24</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px">
+        <div style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 2px">
+          <span class="{{streakClass}}" style="font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 36px; line-height: 0.9; color: #FF3D9A; text-shadow: {{glowMag}}">{{streak}}</span>
+          <span style="font-size: 13px; line-height: 1.2; color: #9D99CC">day streak</span>
+        </div>
+        <div role="img" aria-label="{{streakLabel}}" style="flex: 1 1 auto; display: flex; gap: 4px; padding: 0 4px">
+          <sc-for list="{{segments}}" as="s" hint-placeholder-count="14">
+            <span class="fx" style="flex: 1 1 0; height: 24px; transform: skewX(-20deg); box-sizing: border-box; {{s.frame}}">
+              <span class="seg" style="display: block; width: 100%; height: 100%; {{s.fill}}"></span>
+            </span>
+          </sc-for>
+        </div>
+      </div>
+      <p aria-live="polite" style="margin: 0; font-size: 15px; line-height: 1.3; color: {{statusColor}}">{{statusText}}</p>
+    </section>
+
+    <section aria-labelledby="habits-h" style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: baseline; justify-content: space-between">
+        <h2 id="habits-h" style="margin: 0; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 19px; line-height: 1.3; color: #E8E6FF; text-wrap: balance">Habits left today</h2>
+        <span style="font-size: 14px; color: #9D99CC">{{habitsDoneLabel}}</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <sc-for list="{{habits}}" as="h" hint-placeholder-count="3">
+          <button type="button" aria-pressed="{{h.done}}" onClick="{{h.toggle}}" class="fx" style="display: block; width: 100%; padding: 1px; text-align: left; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); {{h.frameStyle}}">
+            <span class="fx" style="display: flex; align-items: center; gap: 14px; min-height: 48px; box-sizing: border-box; padding: 0 16px 0 12px; clip-path: polygon(0 0, calc(100% - 13.5px) 0, 100% 13.5px, 100% 100%, 0 100%); {{h.innerStyle}}">
+              <span class="fx" style="flex: 0 0 24px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); {{h.cellStyle}}">
+                <sc-if value="{{h.done}}" hint-placeholder-val="{{ false }}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0820" stroke-width="3.4" stroke-linecap="square" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"></polyline></svg>
+                </sc-if>
+              </span>
+              <span style="flex: 1 1 auto; min-width: 0; font-size: 16px; font-weight: 500; line-height: 1.25; color: #E8E6FF">{{h.name}}</span>
+              <span class="fx" style="flex: 0 0 auto; display: flex; align-items: baseline; gap: 4px; {{h.runStyle}}">
+                <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 16px">{{h.run}}</span>
+                <span style="font-size: 13px">{{h.runUnit}}</span>
+              </span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-labelledby="todo-h" style="display: flex; flex-direction: column; gap: 4px">
+      <div style="display: flex; align-items: baseline; justify-content: space-between">
+        <h2 id="todo-h" style="margin: 0; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 19px; line-height: 1.3; color: #E8E6FF">To-do</h2>
+        <span style="font-size: 14px; color: #9D99CC">{{todoOpenLabel}}</span>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <sc-for list="{{todos}}" as="t" hint-placeholder-count="3">
+          <button type="button" aria-pressed="{{t.done}}" onClick="{{t.toggle}}" style="display: flex; align-items: center; gap: 15px; width: 100%; min-height: 46px; border-bottom: 1px solid #241F4D; text-align: left; font-size: 16px; font-weight: 500">
+            <span class="fx" style="position: relative; flex: 0 0 16px; width: 16px; height: 16px; margin: 0 4px; transform: rotate(45deg); {{t.boxStyle}}">
+              <sc-if value="{{t.open}}" hint-placeholder-val="{{ true }}">
+                <span style="position: absolute; inset: 1.5px; background: #0A0820"></span>
+              </sc-if>
+            </span>
+            <span class="fx" style="min-width: 0; line-height: 1.25; {{t.textStyle}}">{{t.name}}</span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-labelledby="week-h" style="display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: baseline; justify-content: space-between">
+        <h2 id="week-h" style="margin: 0; font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 19px; line-height: 1.3; color: #E8E6FF">This week</h2>
+        <span style="font-size: 14px; color: #9D99CC">{{weekRange}}</span>
+      </div>
+      <div role="img" aria-label="{{weekLabel}}" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
+          <div style="display: flex; flex-direction: column; gap: 7px">
+            <div style="display: flex; flex-direction: column; gap: 3px; padding: 0 3px">
+              <sc-for list="{{d.cells}}" as="c" hint-placeholder-count="5">
+                <span class="fx" style="display: block; height: 8px; transform: skewX(-20deg); box-sizing: border-box; {{c.style}}"></span>
+              </sc-for>
+            </div>
+            <span style="text-align: center; font-size: 13px; line-height: 1; {{d.labelStyle}}">{{d.letter}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding-top: 12px; border-top: 1px solid #241F4D">
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.05; color: #E8E6FF">{{habitsWeek}}</span>
+          <span style="font-size: 13px; color: #9D99CC">Habits done</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.05; color: #E8E6FF">{{tasksWeek}}</span>
+          <span style="font-size: 13px; color: #9D99CC">Tasks done</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.05; color: #E8E6FF">{{perfectWeek}}</span>
+          <span style="font-size: 13px; color: #9D99CC">Perfect days</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; box-sizing: border-box; height: 84px; padding: 8px 12px 30px; background: #120E2E; border-top: 1px solid #2A2558; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px">
+    <button type="button" aria-current="page" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 44px; color: #3DF5FF; font-size: 11px; font-weight: 600">
+      <span aria-hidden="true" style="position: absolute; top: -9px; width: 28px; height: 3px; background: #3DF5FF; box-shadow: {{glowCyanBox}}"></span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 12 3.5l8.5 7V20.5h-5.5v-6h-6v6H3.5z"></path></svg>
+      <span>Home</span>
+    </button>
+    <button type="button" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 44px; color: #9D99CC; font-size: 11px; font-weight: 500">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 5.5h17v15h-17z"></path><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>
+      <span>Calendar</span>
+    </button>
+    <button type="button" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 44px; color: #9D99CC; font-size: 11px; font-weight: 500">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M5 20.5v-8M12 20.5v-16M19 20.5v-11"></path></svg>
+      <span>Stats</span>
+    </button>
+    <button type="button" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 44px; color: #9D99CC; font-size: 11px; font-weight: 500">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3.5 6.5h9M17.5 6.5h3M3.5 12h3M11.5 12h9M3.5 17.5h11M19 17.5h1.5"></path><circle cx="15" cy="6.5" r="2.2"></circle><circle cx="9" cy="12" r="2.2"></circle><circle cx="16.8" cy="17.5" r="2.2"></circle></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(rgba(232, 230, 255, 0.035) 0 1px, transparent 1px 3px); opacity: {{scanOpacity}}"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"previewDay":{"editor":"enum","options":["Today","Mon","Tue","Wed","Thu","Fri","Sat","Sun"],"default":"Today","section":"Preview"},"glow":{"editor":"boolean","default":true,"section":"Look"},"scanlines":{"editor":"boolean","default":true,"section":"Look"},"$preview":{"width":390,"height":1064}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      habits: [
+        { id: 'read', name: 'Read 20 pages', run: 8, done: false },
+        { id: 'water', name: 'Drink 2 litres of water', run: 3, done: false },
+        { id: 'stretch', name: 'Stretch for 10 minutes', run: 12, done: false }
+      ],
+      todos: [
+        { id: 'rules', name: 'Set up branch rules on GitHub', done: false },
+        { id: 'calendar', name: 'Sketch the calendar screen', done: false },
+        { id: 'dentist', name: 'Book a dentist appointment', done: true }
+      ],
+      celebrate: false
+    };
+  }
+
+  toggle(key, id) {
+    var next = this.state[key].map(function (x) {
+      return x.id === id ? Object.assign({}, x, { done: !x.done }) : x;
+    });
+    var patch = {};
+    patch[key] = next;
+    if (key === 'habits') patch.celebrate = next.every(function (h) { return h.done; });
+    this.setState(patch);
+  }
+
+  renderVals() {
+    var self = this;
+    var CYAN = '#3DF5FF';
+    var MAG = '#FF3D9A';
+    var MUTED = '#9D99CC';
+    var glow = this.props.glow ?? true;
+    var scanlines = this.props.scanlines ?? true;
+    var LOCALE = 'en-GB';
+
+    // Sample history: habits done earlier today, the streak before today, and past days this week
+    var TOTAL_HABITS = 5;
+    var DONE_EARLIER = 2;
+    var BASE_STREAK = 12;
+    var PAST_HABITS = [5, 4, 5, 3, 5, 4, 5];
+    var PAST_TASKS = [3, 2, 4, 1, 3, 2, 1];
+    var SHORT = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    var LETTERS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+    // Monday-first weekday index; the preview tweak moves "today" within the current week
+    var now = new Date();
+    var realIdx = (now.getDay() + 6) % 7;
+    var preview = this.props.previewDay ?? 'Today';
+    var idx = preview === 'Today' ? realIdx : SHORT.indexOf(preview);
+    if (idx < 0) idx = realIdx;
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate() - realIdx + idx);
+    var monday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - idx);
+    var sunday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 6);
+
+    // ISO 8601 week number
+    var t = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+    t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+    var weekNum = Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
+
+    // How much of today has passed, for the day ruler
+    var minutes = now.getHours() * 60 + now.getMinutes();
+    var left = 1440 - minutes;
+    var dayPct = Math.round(minutes / 1440 * 1000) / 10;
+    var ticks = [];
+    for (var hr = 0; hr <= 24; hr++) {
+      var passed = hr * 60 <= minutes;
+      ticks.push({ style: 'height: ' + (hr % 6 === 0 ? 10 : 5) + 'px; background: ' + (passed ? 'rgba(61, 245, 255, 0.8)' : '#3A3570') });
+    }
+
+    var habitsLeft = this.state.habits.filter(function (h) { return !h.done; }).length;
+    var doneToday = DONE_EARLIER + (this.state.habits.length - habitsLeft);
+    var allDone = habitsLeft === 0;
+    var streak = BASE_STREAK + (allDone ? 1 : 0);
+    var tasksToday = this.state.todos.filter(function (x) { return x.done; }).length;
+    var todosOpen = this.state.todos.length - tasksToday;
+
+    var HATCH = 'background-image: repeating-linear-gradient(135deg, rgba(61, 245, 255, 0.55) 0 2px, transparent 2px 5px); box-shadow: inset 0 0 0 1.5px rgba(61, 245, 255, 0.75)';
+
+    var habits = this.state.habits.map(function (h) {
+      var run = h.run + (h.done ? 1 : 0);
+      return {
+        name: h.name, done: h.done,
+        run: run, runUnit: run === 1 ? 'day' : 'days',
+        runStyle: h.done ? 'color: ' + CYAN : 'color: ' + MUTED,
+        frameStyle: h.done
+          ? 'background-color: ' + CYAN + '; box-shadow: ' + (glow ? '0 0 16px rgba(61, 245, 255, 0.35)' : 'none')
+          : 'background-color: #2E2A5C',
+        innerStyle: h.done ? 'background-color: #172A47' : 'background-color: #120E2E',
+        cellStyle: h.done
+          ? 'background-color: ' + CYAN + '; box-shadow: ' + (glow ? '0 0 10px ' + CYAN : 'none')
+          : HATCH,
+        toggle: function () { self.toggle('habits', h.id); }
+      };
+    });
+    var todos = this.state.todos.map(function (x) {
+      return {
+        name: x.name, done: x.done, open: !x.done,
+        boxStyle: 'background-color: ' + MAG + (x.done && glow ? '; box-shadow: 0 0 10px ' + MAG : ''),
+        textStyle: x.done
+          ? 'color: ' + MUTED + '; text-decoration: line-through; text-decoration-color: rgba(255, 61, 154, 0.8)'
+          : 'color: #E8E6FF',
+        toggle: function () { self.toggle('todos', x.id); }
+      };
+    });
+
+    // 14 streak segments: the oldest is the break before the streak, the last is today.
+    // Lit segments charge up one after another when the screen opens.
+    var segments = [];
+    for (var i = 0; i < 14; i++) {
+      var on = (i >= 1 && i <= 12) || (i === 13 && allDone);
+      var frame, fill;
+      if (on) {
+        frame = 'box-shadow: ' + (glow ? '0 0 10px rgba(255, 61, 154, 0.7)' : 'none');
+        fill = 'background-color: ' + MAG + '; animation-delay: ' + (i * 45) + 'ms';
+      } else if (i === 13) {
+        frame = 'border: 1.5px solid ' + MAG;
+        fill = 'background-image: repeating-linear-gradient(135deg, rgba(255, 61, 154, 0.5) 0 2px, transparent 2px 5px)';
+      } else {
+        frame = 'border: 1px solid #3A3570';
+        fill = '';
+      }
+      segments.push({ frame: frame, fill: fill });
+    }
+
+    // Week grid: one cell per habit done each day, filled from the bottom
+    var week = [];
+    var habitsWeek = 0, tasksWeek = 0, perfect = 0;
+    for (var d = 0; d < 7; d++) {
+      var count = 0, kind;
+      if (d < idx) { kind = 'past'; count = PAST_HABITS[d]; tasksWeek += PAST_TASKS[d]; }
+      else if (d === idx) { kind = 'today'; count = doneToday; tasksWeek += tasksToday; }
+      else kind = 'future';
+      if (kind !== 'future') {
+        habitsWeek += count;
+        if (count === TOTAL_HABITS) perfect++;
+      }
+      var cells = [];
+      for (var c = TOTAL_HABITS - 1; c >= 0; c--) {
+        var lit = c < count, cs;
+        if (kind === 'future') cs = 'border: 1px solid #2A2558';
+        else if (!lit) cs = 'background-color: #1E1A42';
+        else if (kind === 'today') cs = 'background-color: ' + CYAN + '; box-shadow: ' + (glow ? '0 0 8px rgba(61, 245, 255, 0.8)' : 'none');
+        else cs = 'background-color: rgba(61, 245, 255, 0.5)';
+        cells.push({ style: cs });
+      }
+      week.push({
+        letter: LETTERS[d], cells: cells,
+        labelStyle: kind === 'today' ? 'color: ' + MAG + '; font-weight: 600' : 'color: ' + MUTED
+      });
+    }
+
+    var dayName = new Intl.DateTimeFormat(LOCALE, { weekday: 'long' }).format(today);
+    var monthYear = new Intl.DateTimeFormat(LOCALE, { month: 'long', year: 'numeric' }).format(today);
+    var weekRange = new Intl.DateTimeFormat(LOCALE, { day: 'numeric', month: 'short' }).formatRange(monday, sunday);
+    var h = Math.floor(left / 60), m = left % 60;
+
+    return {
+      dayNum: String(today.getDate()).padStart(2, '0'),
+      dayName: dayName,
+      monthYear: monthYear,
+      weekNum: weekNum,
+      timeLeft: (h > 0 ? h + ' h ' : '') + m + ' min left',
+      dayPct: dayPct,
+      dayLabel: Math.round(dayPct) + '% of today has passed',
+      ticks: ticks,
+      numeralShadow: '-4px 0 0 rgba(255, 61, 154, 0.85)' + (glow ? ', 0 0 28px rgba(61, 245, 255, 0.45)' : ''),
+      streak: streak,
+      streakClass: this.state.celebrate ? 'glitch' : '',
+      streakLabel: streak + ' day streak' + (allDone ? ', today included' : ', today not done yet'),
+      segments: segments,
+      statusText: allDone
+        ? 'All habits done. Your streak is now ' + streak + ' days.'
+        : 'Finish ' + habitsLeft + ' more habit' + (habitsLeft === 1 ? '' : 's') + ' to keep your streak.',
+      statusColor: allDone ? MAG : MUTED,
+      glowMag: glow ? '0 0 14px rgba(255, 61, 154, 0.6)' : 'none',
+      glowMagBox: glow ? '0 0 8px rgba(255, 61, 154, 0.9)' : 'none',
+      glowCyanBox: glow ? '0 0 10px rgba(61, 245, 255, 0.8)' : 'none',
+      scanOpacity: scanlines ? 1 : 0,
+      habits: habits,
+      habitsDoneLabel: doneToday + ' of ' + TOTAL_HABITS + ' done',
+      todos: todos,
+      todoOpenLabel: todosOpen === 0 ? 'All clear' : todosOpen + ' open',
+      week: week,
+      weekRange: weekRange,
+      weekLabel: 'Habits completed each day this week, up to ' + dayName,
+      habitsWeek: habitsWeek + '/' + ((idx + 1) * TOTAL_HABITS),
+      tasksWeek: tasksWeek,
+      perfectWeek: perfect
+    };
+  }
+}
+</script>
+</body>
+</html>
