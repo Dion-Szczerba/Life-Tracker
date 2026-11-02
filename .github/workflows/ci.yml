@@ -2,19 +2,19 @@ name: CI
 
 on:
   push:
-    branches: [main]     # run when main changes (e.g. after a merge)
-  pull_request:          # run on every PR, against any branch
+    branches: [main] # run when main changes (e.g. after a merge)
+  pull_request: # run on every PR, against any branch
 
 jobs:
   check:
-    runs-on: ubuntu-latest   # a fresh Linux machine GitHub provides for each run
+    runs-on: ubuntu-latest # a fresh Linux machine GitHub provides for each run
     steps:
-      - uses: actions/checkout@v7          # download your repo onto the machine
-      - uses: actions/setup-node@v7        # install Node
+      - uses: actions/checkout@v7 # download your repo onto the machine
+      - uses: actions/setup-node@v7 # install Node
         with:
-          node-version: 24                 # match your local version (you run 24.x)
-          cache: npm                       # reuse downloaded packages between runs, for speed
-      - run: npm ci                        # clean install, exactly what's in package-lock.json
+          node-version: 24 # match your local version (you run 24.x)
+          cache: npm # reuse downloaded packages between runs, for speed
+      - run: npm ci # clean install, exactly what's in package-lock.json
       - run: npm run lint
       - run: npm run format:check
-      - run: npm run build                 # type check (tsc -b) + production build
+      - run: npm run build # type check (tsc -b) + production build
