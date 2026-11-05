@@ -1,6 +1,8 @@
+import { HabitList } from "@/components/home/HabitList";
 import { HomeHeader } from "@/components/home/HomeHeader";
 import { SAMPLE_HOME } from "@/components/home/sample-data";
 import { TodayCard } from "@/components/home/TodayCard";
+import { TodoList } from "@/components/home/TodoList";
 
 export function HomePage() {
   const data = SAMPLE_HOME;
@@ -15,6 +17,12 @@ export function HomePage() {
         streak={data.streak}
         habitsLeft={data.habitsTotal - data.habitsDoneToday}
       />
+      <HabitList
+        habits={data.habits}
+        doneCount={data.habitsDoneToday}
+        total={data.habitsTotal}
+      />
+      <TodoList todos={data.todos} />
     </div>
   );
 }

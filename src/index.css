@@ -131,11 +131,13 @@
   --color-habit-frame: var(--theme-habit-frame);
   --color-habit-done: var(--theme-habit-done);
 
-  /* Glows: shadow-glow-* and text-shadow-glow-* utilities */
+  /* Glows: shadow-glow-*, drop-shadow-glow-* and text-shadow-glow-* utilities.
+     Use drop-shadow on the parent of anything with clip-path, which clips box-shadow. */
   --shadow-glow-streak: var(--theme-shadow-streak);
   --shadow-glow-today: var(--theme-shadow-today);
-  --shadow-glow-habit: var(--theme-shadow-habit);
   --shadow-glow-tap: var(--theme-shadow-tap);
+  --drop-shadow-glow-habit: var(--theme-shadow-habit);
+  --drop-shadow-glow-tap: var(--theme-shadow-tap);
   --text-shadow-glow-date: var(--theme-text-shadow-date);
   --text-shadow-glow-streak: var(--theme-text-shadow-streak);
 }
