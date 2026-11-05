@@ -19,6 +19,53 @@
   padding-right: env(safe-area-inset-right, 0px);
 }
 
+/* HUD panel background: a faint grid in the theme's frame colour */
+@utility hud-grid {
+  background-image:
+    linear-gradient(
+      color-mix(in oklab, var(--color-frame) 5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--color-frame) 5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 14px 14px;
+}
+
+/* Diagonal stripes in the current text colour: pair with e.g. text-habit/55 */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    currentColor 0 2px,
+    transparent 2px 5px
+  );
+}
+
+/* Top-right corner cut off; the size can be changed with [--cut:10px] */
+@utility cut-corner {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut, 14px)) 0,
+    100% var(--cut, 14px),
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Top-left and bottom-right corners cut off (habit tick box) */
+@utility cut-chip {
+  clip-path: polygon(
+    6px 0,
+    100% 0,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    0 100%,
+    0 6px
+  );
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -83,6 +130,49 @@
   --color-cell-off: var(--theme-cell-off);
   --color-habit-frame: var(--theme-habit-frame);
   --color-habit-done: var(--theme-habit-done);
+
+  /* Glows: shadow-glow-* and text-shadow-glow-* utilities */
+  --shadow-glow-streak: var(--theme-shadow-streak);
+  --shadow-glow-today: var(--theme-shadow-today);
+  --shadow-glow-habit: var(--theme-shadow-habit);
+  --shadow-glow-tap: var(--theme-shadow-tap);
+  --text-shadow-glow-date: var(--theme-text-shadow-date);
+  --text-shadow-glow-streak: var(--theme-text-shadow-streak);
+}
+
+/* Animations: animate-charge, animate-glitch */
+@theme {
+  --animate-charge: charge 0.4s ease-out both;
+  --animate-glitch: glitch 0.35s steps(2, end) 1;
+
+  @keyframes charge {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes glitch {
+    0% {
+      transform: translate(0, 0);
+    }
+    20% {
+      transform: translate(-3px, 1px);
+    }
+    40% {
+      transform: translate(3px, -1px);
+    }
+    60% {
+      transform: translate(-2px, 0);
+    }
+    80% {
+      transform: translate(2px, 1px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
 }
 
 :root {
@@ -202,13 +292,21 @@
   --theme-panel: rgb(10 13 24 / 0.7);
   --theme-text: #e6edf2;
   --theme-muted: #8a9aa8;
-  --theme-nav: rgb(6, 9, 16, 0.82);
+  --theme-nav: rgb(6 9 16 / 0.82);
   --theme-line: #263340;
   --theme-divider: #1e2a35;
   --theme-inactive: #34444f;
   --theme-cell-off: #18222b;
-  --theme-habit-frame: rgb(54, 214, 255, 0.32);
-  --theme-habit-done: rgb(18, 72, 100, 0.72);
+  --theme-habit-frame: rgb(54 214 255 / 0.32);
+  --theme-habit-done: rgb(18 72 100 / 0.72);
+
+  --theme-shadow-streak: 0 0 14px rgb(255 77 94 / 0.9);
+  --theme-shadow-today: 0 0 12px rgb(255 77 94 / 0.95);
+  --theme-shadow-habit: 0 0 22px rgb(54 214 255 / 0.55);
+  --theme-shadow-tap: 0 0 10px rgb(54 214 255 / 0.85);
+  --theme-text-shadow-date:
+    -4px 0 0 rgb(54 214 255 / 0.8), 0 0 36px rgb(255 77 94 / 0.7);
+  --theme-text-shadow-streak: 0 0 18px rgb(255 77 94 / 0.85);
 
   --background: var(--theme-bg);
   --foreground: var(--theme-text);
@@ -230,6 +328,14 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-sans tabular-nums;
+  }
+  button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 3px;
   }
 }

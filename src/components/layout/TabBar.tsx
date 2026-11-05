@@ -40,14 +40,14 @@ export function TabBar({ active }: TabBarProps) {
                 className={cn(
                   "relative flex min-h-11 w-full flex-col items-center justify-center gap-0.5 text-[11px]",
                   isActive
-                    ? "font-semibold text-nav-active"
+                    ? "bg-nav-active/10 font-semibold text-nav-active"
                     : "font-medium text-muted-foreground hover:text-foreground",
                 )}
               >
                 {isActive && (
                   <span
                     aria-hidden="true"
-                    className="absolute -top-2 h-[3px0_0_10px_var(--color-nav-active)]"
+                    className="absolute -top-[9px] h-[3px] w-7 bg-nav-active shadow-glow-tap"
                   />
                 )}
                 <Icon aria-hidden="true" className="size-6" strokeWidth={1.8} />
