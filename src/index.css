@@ -51,6 +51,30 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-date: var(--theme-date);
+  --color-date-offset: var(--theme-date-offset);
+  --color-streak: var(--theme-streak);
+  --color-habit: var(--theme-habit);
+  --color-frame: var(--theme-frame);
+  --color-ruler: var(--theme-ruler);
+  --color-now: var(--theme-now);
+  --color-todo: var(--theme-todo);
+  --color-week: var(--theme-week);
+  --color-nav-active: var(--theme-nav-active);
+  --color-today: var(--theme-today);
+
+  --color-bg: var(--theme-bg);
+  --color-panel: var(--theme-panel);
+  --color-text: var(--theme-text);
+  --color-muted: var(--theme-muted);
+  --color-nav: var(--theme-nav);
+  --color-line: var(--theme-line);
+  --color-divider: var(--theme-divider);
+  --color-inactive: var(--theme-inactive);
+  --color-cell-off: var(--theme-cell-off);
+  --color-habit-frame: var(--theme-habit-frame);
+  --color-habit-done: var(--theme-habit-done);
 }
 
 :root {
@@ -120,6 +144,44 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+[data-theme="blend"] {
+  color-scheme: dark;
+
+  --theme-date: #ff4d5e;
+  --theme-date-offset: #36d6ff;
+  --theme-streak: #ff4d5e;
+  --theme-habit: #36d6ff;
+  --theme-frame: #ff4d5e;
+  --theme-ruler: #ff4d5e;
+  --theme-now: #36d6ff;
+  --theme-todo: #36d6ff;
+  --theme-week: #ff4d5e;
+  --theme-nav-active: #36d6ff;
+  --theme-today: #ff4d5e;
+
+  --theme-bg: #04050a;
+  --theme-panel: rgb(10 13 24 / 0.7);
+  --theme-text: #e6edf2;
+  --theme-muted: #8a9aa8;
+  --theme-nav: rgb(6, 9, 16, 0.82);
+  --theme-line: #263340;
+  --theme-divider: #1e2a35;
+  --theme-inactive: #34444f;
+  --theme-cell-off: #18222b;
+  --theme-habit-frame: rgb(54, 214, 255, 0.32);
+  --theme-habit-done: rgb(18, 72, 100, 0.72);
+
+  --background: var(--theme-bg);
+  --foreground: var(--theme-text);
+  --card: var(--theme-panel);
+  --card-foreground: var(--theme-text);
+  --muted-foreground: var(--theme-muted);
+  --border: var(--theme-line);
+  --input: var(--theme-line);
+  --primary: var(--theme-habit);
+  --primary-foreground: var(--theme-bg);
+  --ring: var(--theme-habit);
 }
 
 @layer base {
