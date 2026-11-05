@@ -3,6 +3,7 @@ import { HomeHeader } from "@/components/home/HomeHeader";
 import { SAMPLE_HOME } from "@/components/home/sample-data";
 import { TodayCard } from "@/components/home/TodayCard";
 import { TodoList } from "@/components/home/TodoList";
+import { WeekStats } from "@/components/home/WeekStats";
 
 export function HomePage() {
   const data = SAMPLE_HOME;
@@ -23,6 +24,11 @@ export function HomePage() {
         total={data.habitsTotal}
       />
       <TodoList todos={data.todos} />
+      <WeekStats
+        week={data.week}
+        habitsTotal={data.habitsTotal}
+        totals={data.weekTotals}
+      />
     </div>
   );
 }
