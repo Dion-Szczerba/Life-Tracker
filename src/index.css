@@ -75,10 +75,7 @@
   --color-nav-active: var(--theme-nav-active);
   --color-today: var(--theme-today);
 
-  --color-bg: var(--theme-bg);
   --color-panel: var(--theme-panel);
-  --color-text: var(--theme-text);
-  --color-muted: var(--theme-muted);
   --color-nav: var(--theme-nav);
   --color-line: var(--theme-line);
   --color-divider: var(--theme-divider);
@@ -158,6 +155,36 @@
 }
 [data-theme="blend"] {
   color-scheme: dark;
+  --theme-bg-gradient: linear-gradient(
+    180deg,
+    #2b0914 0%,
+    #1a0a26 20%,
+    #0b1838 48%,
+    #060b18 74%,
+    #04050a 100%
+  );
+  --theme-glow-a: radial-gradient(
+    closest-side,
+    rgb(255 77 94 / 0.5),
+    transparent
+  );
+  --theme-glow-b: radial-gradient(
+    closest-side,
+    rgb(40 120 255 / 0.4),
+    transparent
+  );
+  --theme-streaks: repeating-linear-gradient(
+    105deg,
+    rgb(230 237 242 / 0.04) 0 1px,
+    transparent 1px 28px
+  );
+  --theme-grid:
+    linear-gradient(rgb(54 214 255 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(54 214 255 / 0.12) 1px, transparent 1px);
+  --theme-scanlines: repeating-linear-gradient(
+    rgb(230 237 242 / 0.035) 0 1px,
+    transparent 1px 3px
+  );
 
   --theme-date: #ff4d5e;
   --theme-date-offset: #36d6ff;
