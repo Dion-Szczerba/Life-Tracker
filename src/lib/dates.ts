@@ -1,4 +1,6 @@
-export function toDateKey(date: Date): string {
+export type DateKey = string;
+
+export function toDateKey(date: Date): DateKey {
   return (
     date.getFullYear().toString() +
     "-" +
@@ -8,7 +10,7 @@ export function toDateKey(date: Date): string {
   );
 }
 
-export function fromDateKey(dateKey: string): Date {
+export function fromDateKey(dateKey: DateKey): Date {
   const [year, month, day] = dateKey.split("-").map(Number);
   return new Date(year, month - 1, day);
 }
