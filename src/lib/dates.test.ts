@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fromDateKey, toDateKey } from "./dates";
+import { fromDateKey, toDateKey, addDaysToKey } from "./dates";
 
 describe("toDateKey", () => {
   it("uses the local year just after midnight on New Year's Day", () => {
@@ -13,5 +13,20 @@ describe("toDateKey", () => {
 describe("fromDateKey", () => {
   it("parses a date key into a Date object", () => {
     expect(fromDateKey("2026-11-06")).toEqual(new Date(2026, 10, 6));
+  });
+});
+describe("addDaysToKey", () => {
+  it("goes back one day", () => {
+    expect(addDaysToKey("2026-11-09", -1)).toBe("2026-11-08");
+  });
+  it("crosses a month boundary", () => {
+    expect(addDaysToKey("2026-11-01", -1)).toBe("2026-10-31");
+  });
+  it("crosses a year boundary", () => {
+    expect(addDaysToKey("2027-01-01", -1)).toBe("2026-12-31");
+  });
+  it("handles the day the clocks go forward", () => {
+    // 27 Sep 2026 is only 23 hours long in Auckland
+    expect(addDaysToKey("2026-09-28", -1)).toBe("2026-09-27");
   });
 });
